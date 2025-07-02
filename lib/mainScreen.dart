@@ -13,7 +13,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Mediciences")),
+      appBar: AppBar(title: const Text("My Mediciences")),
       body: ListView.builder(
         itemCount: mediciences.length,
         itemBuilder: (context, index) {
