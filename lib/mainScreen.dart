@@ -16,8 +16,28 @@ class _MainScreenState extends State<MainScreen> {
       appBar: AppBar(title: const Text("Mediciences")),
       body: ListView.builder(
         itemCount: mediciences.length,
-        itemBuilder: (context, index) =>
-            ListTile(title: Text(mediciences[index])),
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12.0,
+              vertical: 6.0,
+            ),
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              elevation: 3,
+              child: ListTile(
+                title: Text(mediciences[index]),
+                trailing: const Icon(Icons.arrow_forward_ios),
+                onTap: () {
+                  //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> const medicienceInfo))
+                  // Üstteki kod satırı diğer dosyalarla birleştirildiğinde açılacak
+                },
+              ),
+            ),
+          );
+        },
       ),
     );
   }
