@@ -15,25 +15,45 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   //Tamamen örnek olarak burada bir liste atayıp oradan ilaçların isimlerini çekiyoruz.
   //Daha sonrasında veri tabanınından alacağız bu verileri.
-  List<String> mediciences = ["Example1", "Example2"];
+  List<String> mediciences = [
+    "Example1",
+    "Example2",
+    "Example1",
+    "Example 3",
+    "Example 2",
+  ];
 
   String searchTerm = "";
 
   @override
   Widget build(BuildContext context) {
-    // if (searchTerm.isEmpty) {
-    //   final List<String> filteredMediciences = mediciences;
-    // } else {
-    //   final List<String> filteredMediciences = mediciences
-    //       .where((medicience) => medicience.similarityTo(searchTerm) > 0.5)
-    //       .toList();
-    // }
-    final List<String> filteredMediciences = mediciences.where((medicience) {
-      final lowerMedicience = medicience.toLowerCase();
-      final lowerSearch = searchTerm.toLowerCase();
-      return lowerMedicience.contains(lowerSearch) ||
-          lowerMedicience.similarityTo(lowerSearch) > 0.5;
-    }).toList();
+    final lowerSearch = searchTerm.toLowerCase();
+
+    final exactMatches = mediciences.where((medicience) {
+      return medicience.toLowerCase() == lowerSearch;
+    }).toList(); //Aynı eşleşme olanları listeleme yapıyor
+
+    final similarMatches = mediciences
+        .where(
+          (medicience) =>
+              medicience.toLowerCase() !=
+                  lowerSearch //eşlesenleri alma
+                  &&
+              (medicience.toLowerCase().contains(lowerSearch) ||
+                  medicience.toLowerCase().similarityTo(lowerSearch) > 0.3),
+        )
+        .toList();
+    //benzerlik oranına göre sıralama
+    similarMatches.sort(
+      (a, b) => b
+          .toLowerCase()
+          .similarityTo(lowerSearch)
+          .compareTo(a.similarityTo(lowerSearch)),
+    );
+    final filteredMediciences = [
+      ...exactMatches,
+      ...similarMatches,
+    ]; //iki farklı listeyi birleştir.
 
     return Scaffold(
       appBar: AppBar(
