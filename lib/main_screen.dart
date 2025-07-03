@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:string_similarity/string_similarity.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -20,8 +21,18 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> filteredMediciences = mediciences.where((medicience) {
-      return medicience.toLowerCase().contains(searchTerm.toLowerCase());
+    // if (searchTerm.isEmpty) {
+    //   final List<String> filteredMediciences = mediciences;
+    // } else {
+    //   final List<String> filteredMediciences = mediciences
+    //       .where((medicience) => medicience.similarityTo(searchTerm) > 0.5)
+    //       .toList();
+    // }
+    final List<String> filteredMediciences = mediciences.where((medicience) {
+      final lowerMedicience = medicience.toLowerCase();
+      final lowerSearch = searchTerm.toLowerCase();
+      return lowerMedicience.contains(lowerSearch) ||
+          lowerMedicience.similarityTo(lowerSearch) > 0.5;
     }).toList();
 
     return Scaffold(
