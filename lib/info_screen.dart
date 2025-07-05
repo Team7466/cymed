@@ -17,13 +17,15 @@ class IlacPage extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                const Center(
+                  child: Text(
                   'İlaç Başlığı',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+                )
                 const SizedBox(height: 12),
                 Container(
                   width: double.infinity,
