@@ -29,8 +29,9 @@ class IlacPage extends StatelessWidget {
             TextFormField(
               decoration: InputDecoration(
                 labelText: 'Son kullanma tarihi',
+                hintText: 'DD/MM/YYYY',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(19),
                 ),
                 filled: true,
                 fillColor: Colors.amber[100],
@@ -44,7 +45,7 @@ class IlacPage extends StatelessWidget {
               width: double.infinity,
               height: 200,
               decoration: BoxDecoration(
-                color: Colors.blue[50],
+                color: const Color.fromARGB(255, 221, 224, 226),
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: Colors.blueGrey),
               ),
