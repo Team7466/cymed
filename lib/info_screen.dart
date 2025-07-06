@@ -15,7 +15,7 @@ class IlacPage extends StatelessWidget {
         ),
         title: const Align(
           alignment: Alignment.centerRight,
-          child: Text('İlaç Bilgileri'),
+          child: Text('Bilgilendirme Paneli'),
         ),
         backgroundColor: Colors.blue, // Renk istersen
       ),
