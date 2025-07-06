@@ -49,11 +49,25 @@ class IlacPage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: Colors.blueGrey),
               ),
-              child: const Center(
-                child: Text(
-                  'İlaç bilgileri',
-                  style: TextStyle(fontSize: 18),
-                ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text(
+                      'Geri',
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text(
+                      'İlaç bilgileri',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
