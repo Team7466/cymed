@@ -7,15 +7,25 @@ class IlacPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('İlaç Bilgileri'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back), // Geri oku
+          onPressed: () {
+            Navigator.pop(context); // Geri git
+          },
+        ),
+        title: const Align(
+          alignment: Alignment.centerRight,
+          child: Text('İlaç Bilgileri'),
+        ),
+        backgroundColor: Colors.blue, // Renk istersen
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Başlığı ortaladıke
+            // Başlığı ortaladık
             Center(
-              child: const Text(
+              child: Text(
                 'İlaç Başligi',
                 style: TextStyle(
                   fontSize: 24,
@@ -49,25 +59,11 @@ class IlacPage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: Colors.blueGrey),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Text(
-                      'Geri',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Text(
-                      'İlaç bilgileri',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ),
-                ],
+              child: const Center(
+                child: Text(
+                  'İlaç bilgileri',
+                  style: TextStyle(fontSize: 18),
+                ),
               ),
             ),
           ],
