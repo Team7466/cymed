@@ -8,58 +8,62 @@ class IlacPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back), // Geri oku
-          onPressed: () {
-            Navigator.pop(context); // Geri git
-          },
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
         ),
         title: const Align(
           alignment: Alignment.centerRight,
-          child: Text('Bilgilendirme Paneli'),
+          child: Text('İlaç Bilgileri'),
         ),
-        backgroundColor: Colors.blue, // Renk istersen
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Başlığı ortaladık
-            Center(
-              child: Text(
-                'İlaç Başligi',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
+            // İlaç başlığı ve son kullanma tarihi aynı satırda
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'İlaç Başlığı',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-            ),
-            const SizedBox(height: 12),
-
-            // Girilebilir son kullanma tarihi
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'Son kullanma tarihi',
-                hintText: 'DD/MM/YYYY',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(19),
+                SizedBox(
+                  width: 160,
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      hintText: 'DD/MM/YYYY',
+                      labelText: 'SKT',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(19),
+                      ),
+                      filled: true,
+                      fillColor: Colors.amber[100],
+                    ),
+                    keyboardType: TextInputType.datetime,
+                    textAlign: TextAlign.right,
+                  ),
                 ),
-                filled: true,
-                fillColor: Colors.amber[100],
-              ),
-              keyboardType: TextInputType.datetime,
+              ],
             ),
 
-            const Spacer(),
+            const SizedBox(height: 32), // Araya biraz boşluk
 
+            // Daha yukarı ve büyük "İlaç bilgileri" kutusu
             Container(
               width: double.infinity,
-              height: 200,
+              height: 280, // Eskiden 200'dü, şimdi daha büyük
               decoration: BoxDecoration(
                 color: const Color.fromARGB(255, 221, 224, 226),
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: Colors.blueGrey),
               ),
-              child: const Center(
+              child: const Padding(
+                padding: EdgeInsets.all(16.0),
                 child: Text(
                   'İlaç bilgileri',
                   style: TextStyle(fontSize: 18),
