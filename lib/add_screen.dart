@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 class IlacEklemeEkrani extends StatefulWidget {
@@ -22,13 +25,44 @@ class _IlacEklemeEkraniState extends State<IlacEklemeEkrani> {
       );
       return;
     }
+    // Json formatında kaydetme
+    String edittedName = ad.toUpperCase();
+    //windows için dosya yolu
+    String path = "${Directory.current.path}\\mediciences.json";
+
+    List<Map<String, dynamic>> medicienceList = [];
+
+    //dosyadaki verileri okuyor
+    File file = File(
+      'mediciences.json',
+    ); //bu dosya ilaçları kaydetme ve ana ekranda göstermeye yarayan dosya
+    //İlaç bilgilerini farklı bir dosyada tutacağız.
+    if (file.existsSync()) {
+      String content = file.readAsStringSync();
+      if (content.isNotEmpty) {
+        List<dynamic> jsonList = jsonDecode(content);
+        medicienceList = jsonList
+            .map((e) => Map<String, dynamic>.from(e))
+            .toList();
+      }
+    }
+
+    medicienceList.add({
+      "medicienceName": edittedName,
+      "expirationDate": tarih,
+    });
+    //Json formatına dönüştürme
+    String jsonString = jsonEncode(medicienceList);
+
+    //Json kaydetme
+    File(path).writeAsStringSync(jsonString);
 
     debugPrint('İlaç adı: $ad');
     debugPrint('Son kullanma tarihi: $tarih');
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('İlaç başarıyla kaydedildi')),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('İlaç başarıyla kaydedildi')));
 
     ilacAdiController.clear();
     tarihController.clear();
@@ -44,33 +78,30 @@ class _IlacEklemeEkraniState extends State<IlacEklemeEkrani> {
       borderSide: const BorderSide(color: Colors.blue),
     );
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('İlaç Ekleme'),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text('İlaç Ekleme'), centerTitle: true),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             TextField(
               controller: ilacAdiController,
-decoration:  InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'İlaç Adı',
                 border: OutlineInputBorder(),
                 enabledBorder: maviBorder,
                 focusedBorder: maviBorder.copyWith(
-                  borderSide:  BorderSide(color: Colors.blue, width: 2),
+                  borderSide: BorderSide(color: Colors.blue, width: 2),
                 ),
               ),
             ),
             const SizedBox(height: 64),
             TextField(
               controller: tarihController,
-              decoration:  InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Son Kullanma Tarihi',
                 border: OutlineInputBorder(),
                 hintText: 'GG/AA/YYYY',
-                                enabledBorder: maviBorder,
+                enabledBorder: maviBorder,
                 focusedBorder: maviBorder.copyWith(
                   borderSide: const BorderSide(color: Colors.blue, width: 2),
                 ),
