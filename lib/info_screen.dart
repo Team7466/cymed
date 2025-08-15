@@ -26,17 +26,14 @@ class IlacPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
-                  'İlaç Başlığı',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  'İlaç Başlığı', //Veritabanından gelen dosyayı alacağız.
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(
                   width: 160,
                   child: TextFormField(
                     decoration: InputDecoration(
-                      hintText: 'DD/MM/YYYY',
+                      //hintText: 'DD/MM/YYYY',
                       labelText: 'SKT',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(19),
@@ -46,13 +43,14 @@ class IlacPage extends StatelessWidget {
                     ),
                     keyboardType: TextInputType.datetime,
                     textAlign: TextAlign.right,
+                    enabled:
+                        false, //TextFromField Widget'ını devre dışı bıraktık.
                   ),
                 ),
               ],
             ),
 
             const SizedBox(height: 32), // Araya biraz boşluk
-
             // Daha yukarı ve büyük "İlaç bilgileri" kutusu
             Container(
               width: double.infinity,
@@ -64,10 +62,7 @@ class IlacPage extends StatelessWidget {
               ),
               child: const Padding(
                 padding: EdgeInsets.all(16.0),
-                child: Text(
-                  'İlaç bilgileri',
-                  style: TextStyle(fontSize: 18),
-                ),
+                child: Text('İlaç bilgileri', style: TextStyle(fontSize: 18)),
               ),
             ),
           ],
