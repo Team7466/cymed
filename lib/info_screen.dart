@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
 
 class IlacPage extends StatelessWidget {
-  const IlacPage({super.key});
+  //bu bilgileri diğer sayfadan alacağız.
+  //bu yüzden burada değişken olarak tanımladım.
+  //ilaç bilgileri kısmını ise burada bir veritabanı işlemi yapacağız. Oradan alacağız.
+  //karışıklığı azaltmak için veritabanı işlemeni farklı bir dart dosyasında yapabiliriz.
+  final String medicienceName;
+  final String expirationDate;
+  const IlacPage({
+    super.key,
+    required this.medicienceName,
+    required this.expirationDate,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,16 +35,19 @@ class IlacPage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  'İlaç Başlığı', //Veritabanından gelen dosyayı alacağız.
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                Text(
+                  medicienceName, //Veritabanından gelen dosyayı alacağız.
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 SizedBox(
                   width: 160,
                   child: TextFormField(
                     decoration: InputDecoration(
                       //hintText: 'DD/MM/YYYY',
-                      labelText: 'SKT',
+                      labelText: expirationDate,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(19),
                       ),

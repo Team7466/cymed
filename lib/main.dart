@@ -13,10 +13,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'cymed-1',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: const IlacPage(
+        medicienceName: "HAMETAN",
+        expirationDate: "19/08/2025",
       ),
-      home: const IlacPage(),
     );
   }
 }
