@@ -18,6 +18,10 @@ class _IlacEklemeEkraniState extends State<IlacEklemeEkrani> {
   void ilaciKaydet() {
     String ad = ilacAdiController.text.trim();
     String tarih = tarihController.text.trim();
+    Navigator.pop(
+      context,
+      true,
+    ); //burada navigator de true döndürelim ki mainScreen yenilensin
 
     if (ad.isEmpty || tarih.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(

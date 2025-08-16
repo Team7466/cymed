@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class IlacPage extends StatelessWidget {
+class InfoScreen extends StatelessWidget {
   //bu bilgileri diğer sayfadan alacağız.
   //bu yüzden burada değişken olarak tanımladım.
   //ilaç bilgileri kısmını ise burada bir veritabanı işlemi yapacağız. Oradan alacağız.
   //karışıklığı azaltmak için veritabanı işlemeni farklı bir dart dosyasında yapabiliriz.
   final String medicienceName;
   final String expirationDate;
-  const IlacPage({
+  const InfoScreen({
     super.key,
     required this.medicienceName,
     required this.expirationDate,

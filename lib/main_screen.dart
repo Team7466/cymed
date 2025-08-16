@@ -1,3 +1,5 @@
+import 'package:cymed/add_screen.dart';
+import 'package:cymed/info_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:string_similarity/string_similarity.dart';
 import 'models/medicience.dart';
@@ -99,13 +101,16 @@ class _MainScreenState extends State<MainScreen> {
                       ), //arama kutusu ile buton arası boşluk
                       //İlaç ekleme butonu
                       IconButton(
-                        onPressed: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => const addScreen(),
-                          //   ),
-                          // );
+                        onPressed: () async {
+                          final result = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const IlacEklemeEkrani(),
+                            ), //Navigator true dönerse mainScreen ve listeyi yenileyeceğiz.
+                          );
+                          if (result == true) {
+                            _loadData();
+                          }
                         },
                         icon: Icon(Icons.add),
                         color: Colors.black,
@@ -138,7 +143,17 @@ class _MainScreenState extends State<MainScreen> {
                             ),
                             trailing: const Icon(Icons.arrow_forward_ios),
                             onTap: () {
-                              //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> const medicienceInfo))
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) => InfoScreen(
+                                    medicienceName:
+                                        filteredMediciences[index].name,
+                                    expirationDate: filteredMediciences[index]
+                                        .expirationDate,
+                                  ),
+                                ),
+                              );
                               // Üstteki kod satırı diğer dosyalarla birleştirildiğinde açılacak
                             },
                           ),
