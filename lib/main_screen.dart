@@ -77,17 +77,41 @@ class _MainScreenState extends State<MainScreen> {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(12),
-                  child: TextField(
-                    decoration: const InputDecoration(
-                      labelText: "Search a medicience",
-                      border: OutlineInputBorder(),
-                      icon: Icon(Icons.search),
-                    ),
-                    onChanged: (value) {
-                      setState(() {
-                        searchTerm = value;
-                      });
-                    },
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          decoration: const InputDecoration(
+                            labelText: "Search a medicience",
+                            border: OutlineInputBorder(),
+                            icon: Icon(Icons.search),
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              searchTerm = value;
+                            });
+                          },
+                        ),
+                      ),
+
+                      const SizedBox(
+                        width: 8,
+                      ), //arama kutusu ile buton arası boşluk
+                      //İlaç ekleme butonu
+                      IconButton(
+                        onPressed: () {
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => const addScreen(),
+                          //   ),
+                          // );
+                        },
+                        icon: Icon(Icons.add),
+                        color: Colors.black,
+                        tooltip: "İlaç Ekle",
+                      ),
+                    ],
                   ),
                 ),
                 Expanded(
