@@ -1,22 +1,33 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'models/medicience.dart';
 
 Future<List<Medicience>> loadingMediciences() async {
-  //Dosyayı okuyoruz. Eğer dosyanın adı değişirse ya da dosya bulunmazsa burayı kontrol et
-  final file = File("mediciences.json");
+  try {
+    String jsonString;
+    
+    // Web platformu için: rootBundle kullanıyoruz
+    // Native platformlar için (Windows, Android, iOS, macOS, Linux) File kullanıyoruz
+    if (kIsWeb) {
+      // Web platformunda
+      jsonString = await rootBundle.loadString('mediciences.json');
+    } else {
+      // Native platformlar
+      final file = File("mediciences.json");
+      if (!await file.exists()) {
+        return [];
+      }
+      jsonString = await file.readAsString();
+    }
 
-  //Dosya boşsa boş list dönderiyoruz.
-  if (!await file.exists()) {
+    final List<dynamic> jsonList = jsonDecode(jsonString);
+    return jsonList
+        .map((item) => Medicience.fromJson(item))
+        .toList();
+  } catch (e) {
+    print('Hata: Mediciences yükleme başarısız: $e');
     return [];
   }
-
-  final jsonString = await file.readAsString(); //dosyayı okuyoruz
-  final List<dynamic> jsonList = jsonDecode(
-    jsonString,
-  ); //Json ı list olarak decode ediyoruz
-
-  return jsonList
-      .map((item) => Medicience.fromJson(item))
-      .toList(); // Medicience data modeline uygun listeyi gönderiyoruz.
 }
