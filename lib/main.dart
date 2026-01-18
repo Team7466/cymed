@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import 'add_screen.dart';
 import 'main_screen.dart';
-import 'info_screen.dart'; // Eğer dosya ismin buysa (lib/ilac_page.dart)
+import 'info_screen.dart';
+import 'services/notification_service.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize notification service on app startup
+  final notificationService = NotificationService();
+  await notificationService.initializeNotifications();
+
   runApp(const MyApp());
 }
 

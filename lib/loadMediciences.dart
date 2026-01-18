@@ -7,14 +7,13 @@ import 'models/medicience.dart';
 Future<List<Medicience>> loadingMediciences() async {
   try {
     String jsonString;
-    
-    // Web platformu için: rootBundle kullanıyoruz
-    // Native platformlar için (Windows, Android, iOS, macOS, Linux) File kullanıyoruz
+
+    // Different loading strategies for web vs native platforms
     if (kIsWeb) {
-      // Web platformunda
+      // Web: load from bundled assets
       jsonString = await rootBundle.loadString('mediciences.json');
     } else {
-      // Native platformlar
+      // Native platforms: load from local file
       final file = File("mediciences.json");
       if (!await file.exists()) {
         return [];
@@ -23,11 +22,33 @@ Future<List<Medicience>> loadingMediciences() async {
     }
 
     final List<dynamic> jsonList = jsonDecode(jsonString);
-    return jsonList
-        .map((item) => Medicience.fromJson(item))
-        .toList();
+    return jsonList.map((item) => Medicience.fromJson(item)).toList();
   } catch (e) {
     print('Hata: Mediciences yükleme başarısız: $e');
     return [];
+  }
+}
+
+// Save medicines to JSON file (native platforms only)
+Future<bool> saveMediciences(List<Medicience> mediciences) async {
+  try {
+    final jsonString = jsonEncode(
+      mediciences.map((med) => med.toJson()).toList(),
+    );
+
+    if (kIsWeb) {
+      // Web platformunda kaydetme desteklenmiyor (localStorage kullanılabilir)
+      print('Uyarı: Web platformunda yerel dosya kaydı desteklenmiyor');
+      return false;
+    } else {
+      // Native platformlar
+      final file = File("mediciences.json");
+      await file.writeAsString(jsonString);
+      print('İlaçlar başarıyla kaydedildi');
+      return true;
+    }
+  } catch (e) {
+    print('Hata: İlaçlar kaydedilirken hata oluştu: $e');
+    return false;
   }
 }

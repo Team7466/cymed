@@ -1,1 +1,23 @@
-[{"medicienceName":"HAMETAN","expirationDate":"05/05/2025"},{"medicienceName":"ASPIRIN","expirationDate":"12/05/2025"},{"medicienceName":"FURACIN","expirationDate":"12/06/2025"},{"medicienceName":"HAMETAN","expirationDate":"03/08/2027"},{"medicienceName":"SITILEX","expirationDate":"08/12/2027"}]
+[
+  {
+    "medicienceName": "HAMETAN",
+    "takingTime": "09:00",
+    "frequency": "Günde 1",
+    "duration": "10 gün",
+    "notes": "Yemekten sonra su ile al"
+  },
+  {
+    "medicienceName": "ASPIRIN",
+    "takingTime": "14:30",
+    "frequency": "Günde 2",
+    "duration": "1 ay",
+    "notes": "Baş ağrısında kullan. Yemek öncesi alabilirsin"
+  },
+  {
+    "medicienceName": "FURACIN",
+    "takingTime": "20:00",
+    "frequency": "Günde 1",
+    "duration": "2 hafta",
+    "notes": "Uyku öncesi al. Soğuk su ile birlikte al"
+  }
+]

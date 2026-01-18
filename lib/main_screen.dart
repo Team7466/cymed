@@ -8,20 +8,12 @@ import 'loadMediciences.dart';
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
-  //Stateful Widget, Türkçeye çevirirsek durum alabilen Widget olarak çevirebiliriz
-  //Bu bizim sayfada olan değişiklikleri sayfayı yenilemeden yapmamızı sağlar.
-  //Bu widget kullanıcıdan veri aldığımız ekranlar için kullanılır.
-  //Bu sayfada veri alacağımız kısım arama kutusudur.
   @override
   State<MainScreen> createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {
-  //Tamamen örnek olarak burada bir liste atayıp oradan ilaçların isimlerini çekiyoruz.
-  //Daha sonrasında veri tabanınından alacağız bu verileri.
-
   List<Medicience> mediciences = [];
-
   String searchTerm = "";
 
   @override
@@ -31,50 +23,77 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Future<void> _loadData() async {
-    final loadedData =
-        await loadingMediciences(); //dosyaları okuma ve değişkene atama
+    final loadedData = await loadingMediciences();
     setState(() {
-      mediciences = loadedData; //verileri liste atıyoruz.
+      mediciences = loadedData;
     });
+  }
+
+  // Delete medicine with confirmation dialog
+  Future<void> _deleteMedicine(int index) async {
+    final confirmed = await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('İlaçı Sil'),
+        content: Text('${mediciences[index].name} silinecek. Devam et?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('İptal'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Sil'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      setState(() {
+        mediciences.removeAt(index);
+      });
+      // Save updated list to JSON file
+      await saveMediciences(mediciences);
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('İlaç silindi')));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final lowerSearch = searchTerm.toLowerCase();
 
+    // Separate exact matches from similar matches for better search results
     final exactMatches = mediciences.where((medicience) {
       return medicience.name.toLowerCase() == lowerSearch;
-    }).toList(); //Aynı eşleşme olanları listeleme yapıyor
+    }).toList();
 
+    // Find medicines with partial or similar names
     final similarMatches = mediciences
         .where(
           (medicience) =>
-              medicience.name.toLowerCase() !=
-                  lowerSearch //eşlesenleri alma
-                  &&
+              medicience.name.toLowerCase() != lowerSearch &&
               (medicience.name.toLowerCase().contains(lowerSearch) ||
                   medicience.name.toLowerCase().similarityTo(lowerSearch) >
                       0.3),
         )
         .toList();
-    //benzerlik oranına göre sıralama
+
     similarMatches.sort(
       (a, b) => b.name
           .toLowerCase()
           .similarityTo(lowerSearch)
           .compareTo(a.name.similarityTo(lowerSearch)),
     );
-    final filteredMediciences = [
-      ...exactMatches,
-      ...similarMatches,
-    ]; //iki farklı listeyi birleştir.
+
+    final filteredMediciences = [...exactMatches, ...similarMatches];
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("My Mediciences"),
-      ), //Sayfanın en üstüne görünen kısım.
+      appBar: AppBar(title: const Text("My Mediciences")),
       body: mediciences.isEmpty
-          ? const Center(child: CircularProgressIndicator()) //yükleme ekranı
+          ? const Center(child: CircularProgressIndicator())
           : Column(
               children: [
                 Padding(
@@ -95,24 +114,20 @@ class _MainScreenState extends State<MainScreen> {
                           },
                         ),
                       ),
-
-                      const SizedBox(
-                        width: 8,
-                      ), //arama kutusu ile buton arası boşluk
-                      //İlaç ekleme butonu
+                      const SizedBox(width: 8),
                       IconButton(
                         onPressed: () async {
                           final result = await Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => const IlacEklemeEkrani(),
-                            ), //Navigator true dönerse mainScreen ve listeyi yenileyeceğiz.
+                            ),
                           );
                           if (result == true) {
                             _loadData();
                           }
                         },
-                        icon: Icon(Icons.add),
+                        icon: const Icon(Icons.add),
                         color: Colors.black,
                         tooltip: "İlaç Ekle",
                       ),
@@ -123,39 +138,51 @@ class _MainScreenState extends State<MainScreen> {
                   child: ListView.builder(
                     itemCount: filteredMediciences.length,
                     itemBuilder: (context, index) {
+                      final medicine = filteredMediciences[index];
                       return Padding(
-                        //Burada ilaçların isminin yazdığı text ile genel ilaçların olduğu kutunun
-                        //arasındaki boşluğu belirşiyoruz.
                         padding: const EdgeInsets.symmetric(
                           horizontal: 12.0,
                           vertical: 6.0,
                         ),
                         child: Card(
-                          //İlaçların isimlerine dikdörtgensi bir görünüm veriyoruz.
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
                           elevation: 3,
                           child: ListTile(
-                            title: Text(filteredMediciences[index].name),
+                            title: Text(medicine.name),
                             subtitle: Text(
-                              "SKT: ${filteredMediciences[index].expirationDate}",
+                              "Saat: ${medicine.takingTime} | Sıklık: ${medicine.frequency}",
                             ),
-                            trailing: const Icon(Icons.arrow_forward_ios),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (BuildContext context) => InfoScreen(
-                                    medicienceName:
-                                        filteredMediciences[index].name,
-                                    expirationDate: filteredMediciences[index]
-                                        .expirationDate,
+                            trailing: SizedBox(
+                              width: 100,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(Icons.info_outline),
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              InfoScreen(medicience: medicine),
+                                        ),
+                                      );
+                                    },
                                   ),
-                                ),
-                              );
-                              // Üstteki kod satırı diğer dosyalarla birleştirildiğinde açılacak
-                            },
+                                  IconButton(
+                                    icon: const Icon(
+                                      Icons.delete,
+                                      color: Colors.red,
+                                    ),
+                                    onPressed: () => _deleteMedicine(
+                                      mediciences.indexOf(medicine),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       );
